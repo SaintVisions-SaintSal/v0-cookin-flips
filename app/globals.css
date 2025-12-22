@@ -1,0 +1,381 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Properties */
+:root {
+  --gold: #d4af37;
+  --gold-light: #e8c547;
+  --gold-dark: #b8960e;
+  --void-black: #0a0a0a;
+  --void-dark: #111111;
+  --void-medium: #1a1a1a;
+  /* Added Caribbean Blue for FlipEffective branding */
+  --caribbean-blue: #00ced1;
+  --caribbean-blue-light: #20e8e8;
+  --caribbean-blue-dark: #00a5a8;
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--void-black);
+  color: white;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--gold);
+  color: black;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--void-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-light);
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair), serif;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Gold Text Gradient */
+.text-gold-gradient {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gold Glow */
+.glow-gold {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), 0 0 40px rgba(212, 175, 55, 0.2), 0 0 60px rgba(212, 175, 55, 0.1);
+}
+
+.glow-gold-sm {
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2), 0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+/* Caribbean Blue Glow */
+.glow-caribbean {
+  box-shadow: 0 0 20px rgba(0, 206, 209, 0.3), 0 0 40px rgba(0, 206, 209, 0.2), 0 0 60px rgba(0, 206, 209, 0.1);
+}
+
+.glow-caribbean-sm {
+  box-shadow: 0 0 10px rgba(0, 206, 209, 0.2), 0 0 20px rgba(0, 206, 209, 0.1);
+}
+
+/* Glass Effect */
+.glass {
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.glass-dark {
+  background: rgba(10, 10, 10, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+/* Card Styles */
+.card-elevated {
+  background: linear-gradient(135deg, var(--void-medium), var(--void-dark));
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.card-elevated:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Button Styles */
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: black;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+}
+
+.btn-gold:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--gold);
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--gold);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-1px);
+}
+
+/* FlipEffective Button */
+.btn-caribbean {
+  background: linear-gradient(135deg, var(--caribbean-blue), var(--caribbean-blue-dark));
+  color: black;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-caribbean:hover {
+  background: linear-gradient(135deg, var(--caribbean-blue-light), var(--caribbean-blue));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 206, 209, 0.3);
+}
+
+/* Input Styles */
+.input-dark {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: white;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.input-dark::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input-dark:focus {
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
+}
+
+/* Animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-gold {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 2s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Grid Pattern Background */
+.grid-pattern {
+  background-image: linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Gradient Borders */
+.border-gradient {
+  position: relative;
+}
+
+.border-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--gold), transparent, var(--gold));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Line Clamp */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-4 {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Utilities */
+.text-gold {
+  color: var(--gold);
+}
+
+.bg-gold {
+  background-color: var(--gold);
+}
+
+.border-gold {
+  border-color: var(--gold);
+}
+
+/* Added Caribbean Blue utility classes */
+.text-caribbean {
+  color: var(--caribbean-blue);
+}
+
+.bg-caribbean {
+  background-color: var(--caribbean-blue);
+}
+
+.border-caribbean {
+  border-color: var(--caribbean-blue);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem !important;
+  }
+
+  h2 {
+    font-size: 2rem !important;
+  }
+}
+
+/* Focus States */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Disabled States */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Loading State */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+  animation: shimmer 1.5s infinite;
+}
