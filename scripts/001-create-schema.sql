@@ -257,3 +257,147 @@ CREATE INDEX IF NOT EXISTS idx_properties_type ON properties(property_type);
 
 CREATE INDEX IF NOT EXISTS idx_contacts_created_at ON contact_submissions(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_contacts_is_read ON contact_submissions(is_read);
+
+-- ============================================
+-- RESEARCH CONVERSATIONS TABLE - SaintSal AI searches
+-- ============================================
+CREATE TABLE IF NOT EXISTS research_conversations (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  title VARCHAR(255),
+  query TEXT NOT NULL,
+  results JSONB, -- Stores search results
+  ai_analysis TEXT, -- SaintSal AI analysis response
+  detected_type VARCHAR(50), -- 'lending', 'real-estate', 'stocks', 'property-analysis', 'general'
+  recommended_platforms TEXT[], -- Array of recommended platform keys
+  is_favorite BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ============================================
+-- PROPERTY ANALYSES TABLE - Deal analyzer submissions
+-- ============================================
+CREATE TABLE IF NOT EXISTS property_analyses (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL, -- NULL for guest submissions
+
+  -- Property Info
+  property_address VARCHAR(255) NOT NULL,
+  total_sqft INTEGER,
+  evaluator_name VARCHAR(255),
+  property_description TEXT,
+
+  -- Property Values
+  after_repair_value DECIMAL(12,2),
+  current_as_is_value DECIMAL(12,2),
+  estimated_repair_costs DECIMAL(12,2),
+  maximum_allowable_offer DECIMAL(12,2),
+  purchase_price DECIMAL(12,2),
+  estimated_hold_time INTEGER, -- in months
+  misc_costs DECIMAL(12,2),
+
+  -- Financing Costs
+  first_mortgage_amount DECIMAL(12,2),
+  first_mortgage_points DECIMAL(5,2),
+  first_mortgage_interest_rate DECIMAL(5,2),
+  second_mortgage_amount DECIMAL(12,2),
+  second_mortgage_points DECIMAL(5,2),
+  second_mortgage_interest_rate DECIMAL(5,2),
+  repair_financing_amount DECIMAL(12,2),
+  repair_financing_points DECIMAL(5,2),
+  repair_financing_interest_rate DECIMAL(5,2),
+
+  -- Holding Costs (monthly)
+  monthly_property_taxes DECIMAL(12,2),
+  monthly_hoa DECIMAL(12,2),
+  monthly_insurance DECIMAL(12,2),
+  monthly_utilities DECIMAL(12,2),
+  monthly_other_holding DECIMAL(12,2),
+
+  -- Buying Transaction Costs
+  buying_escrow_fee DECIMAL(12,2),
+  buying_title_insurance DECIMAL(12,2),
+  buying_misc_costs DECIMAL(12,2),
+
+  -- Selling Transaction Costs
+  selling_escrow_fee DECIMAL(12,2),
+  selling_title_insurance DECIMAL(12,2),
+  selling_transfer_taxes DECIMAL(12,2),
+  selling_home_warranty DECIMAL(12,2),
+  selling_staging_costs DECIMAL(12,2),
+  selling_agent_commission_rate DECIMAL(5,2),
+  selling_misc_costs DECIMAL(12,2),
+
+  -- Calculated Results
+  total_financing_costs DECIMAL(12,2),
+  total_holding_costs DECIMAL(12,2),
+  total_buying_costs DECIMAL(12,2),
+  total_selling_costs DECIMAL(12,2),
+  total_costs DECIMAL(12,2),
+  estimated_net_profit DECIMAL(12,2),
+  purchase_rehab_roi DECIMAL(8,2),
+  total_costs_roi DECIMAL(8,2),
+  my_committed_capital DECIMAL(12,2),
+  repair_cost_per_sqft DECIMAL(12,2),
+  annualized_cash_on_cash DECIMAL(8,2),
+
+  -- AI Verdict
+  ai_verdict VARCHAR(50), -- 'EXCELLENT DEAL', 'GOOD OPPORTUNITY', 'PROCEED WITH CAUTION', 'NOT RECOMMENDED'
+
+  -- Metadata
+  status VARCHAR(50) DEFAULT 'draft', -- 'draft', 'submitted', 'reviewed'
+  submitted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- ============================================
+-- RLS FOR NEW TABLES
+-- ============================================
+
+-- Enable RLS
+ALTER TABLE research_conversations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE property_analyses ENABLE ROW LEVEL SECURITY;
+
+-- Research conversations - users can only see their own
+CREATE POLICY "Users can view own research" ON research_conversations
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own research" ON research_conversations
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own research" ON research_conversations
+  FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own research" ON research_conversations
+  FOR DELETE USING (auth.uid() = user_id);
+
+-- Property analyses - anyone can submit, users can view their own
+CREATE POLICY "Anyone can submit property analysis" ON property_analyses
+  FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Users can view own analyses" ON property_analyses
+  FOR SELECT USING (auth.uid() = user_id OR user_id IS NULL);
+
+CREATE POLICY "Users can update own analyses" ON property_analyses
+  FOR UPDATE USING (auth.uid() = user_id);
+
+-- Admins can manage all
+CREATE POLICY "Admins can manage research" ON research_conversations
+  FOR ALL USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Admins can manage analyses" ON property_analyses
+  FOR ALL USING (auth.role() = 'authenticated');
+
+-- ============================================
+-- INDEXES FOR NEW TABLES
+-- ============================================
+CREATE INDEX IF NOT EXISTS idx_research_user_id ON research_conversations(user_id);
+CREATE INDEX IF NOT EXISTS idx_research_created_at ON research_conversations(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_research_detected_type ON research_conversations(detected_type);
+
+CREATE INDEX IF NOT EXISTS idx_analyses_user_id ON property_analyses(user_id);
+CREATE INDEX IF NOT EXISTS idx_analyses_created_at ON property_analyses(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_analyses_address ON property_analyses(property_address);
+CREATE INDEX IF NOT EXISTS idx_analyses_verdict ON property_analyses(ai_verdict);
