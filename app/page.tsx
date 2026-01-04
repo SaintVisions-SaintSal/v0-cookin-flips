@@ -281,6 +281,10 @@ export default function CookinFlipsHome() {
               <Link href="#contact" className="text-white/80 hover:text-gold transition">
                 Contact
               </Link>
+              <Link href="/evaluate" className="text-white/80 hover:text-gold transition flex items-center gap-1">
+                <Calculator className="w-4 h-4" />
+                Evaluate
+              </Link>
               <Link
                 href="/portal"
                 className="px-6 py-2.5 bg-gold text-black font-semibold rounded-lg hover:bg-gold/90 transition"
@@ -340,6 +344,14 @@ export default function CookinFlipsHome() {
                   className="block py-2 text-white/80 hover:text-gold"
                 >
                   Contact
+                </Link>
+                <Link
+                  href="/evaluate"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 py-2 text-white/80 hover:text-gold"
+                >
+                  <Calculator className="w-4 h-4" />
+                  Evaluate Deal
                 </Link>
                 <Link
                   href="/portal"
