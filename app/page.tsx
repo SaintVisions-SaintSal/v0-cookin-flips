@@ -168,12 +168,14 @@ const investmentAreas = [
 ]
 
 const loanProducts = [
-  { name: "Fix & Flip", rate: "From 9.99%", ltv: "Up to 90% LTC" },
-  { name: "DSCR Rental", rate: "From 7.49%", ltv: "Up to 80% LTV" },
-  { name: "Bridge Loans", rate: "From 10.99%", ltv: "Up to 75% LTV" },
-  { name: "Construction", rate: "From 11.99%", ltv: "Up to 85% LTC" },
-  { name: "Commercial", rate: "From 6.99%", ltv: "Up to 75% LTV" },
-  { name: "Cannabis", rate: "From 12.99%", ltv: "Up to 65% LTV" },
+  { name: "Fix & Flip", rate: "From 9.50%", ltv: "Up to 90% LTC", icon: "🔨", highlight: true },
+  { name: "DSCR Rental", rate: "From 7.25%", ltv: "Up to 80% LTV", icon: "📊", highlight: true },
+  { name: "Bridge Loans", rate: "From 8.50%", ltv: "Up to 75% LTV", icon: "🌉" },
+  { name: "Construction", rate: "From 7.50%", ltv: "Up to 85% LTC", icon: "🏗️" },
+  { name: "Commercial", rate: "From 6.75%", ltv: "Up to 80% LTV", icon: "🏢" },
+  { name: "Cannabis", rate: "From 12.00%", ltv: "Up to 65% LTV", icon: "🌿", highlight: true },
+  { name: "SBA 7(a)", rate: "Prime + 2.25%", ltv: "Up to 90% LTV", icon: "🇺🇸" },
+  { name: "Multi-Family", rate: "From 6.25%", ltv: "Up to 80% LTV", icon: "🏨", highlight: true },
 ]
 
 export default function CookinFlipsHome() {
@@ -720,53 +722,97 @@ export default function CookinFlipsHome() {
       <section id="lending" className="py-24 bg-[#0a0a0a]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gold/10 border border-gold/30 rounded-full mb-6"
+            >
+              <DollarSign className="w-4 h-4 text-gold" />
+              <span className="text-gold text-sm font-medium">50+ Loan Products Available</span>
+            </motion.div>
             <h2 className="text-4xl lg:text-5xl font-bold mb-4">
               <span className="text-gold">Lending</span> Solutions
             </h2>
             <p className="text-xl text-white/60 max-w-2xl mx-auto">
-              Full-service lending across all 51 states. We finance everything - including cannabis.
+              Full-service lending across all 51 states. Residential, commercial, business & specialty.
+              We finance everything - including cannabis.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {loanProducts.map((loan, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: i * 0.05 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-br from-[#1a1a1a] to-[#111] border border-gold/20 rounded-xl p-6 hover:border-gold/40 transition"
+                className={`bg-gradient-to-br from-[#1a1a1a] to-[#111] border rounded-xl p-6 hover:border-gold/60 transition group cursor-pointer ${
+                  loan.highlight ? 'border-gold/40' : 'border-gold/20'
+                }`}
               >
-                <h4 className="text-xl font-bold text-white mb-4">{loan.name}</h4>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-2xl">{loan.icon}</span>
+                  {loan.highlight && (
+                    <span className="px-2 py-1 bg-gold/20 text-gold text-xs font-bold rounded-full">HOT</span>
+                  )}
+                </div>
+                <h4 className="text-lg font-bold text-white mb-3 group-hover:text-gold transition">{loan.name}</h4>
                 <div className="flex justify-between items-center mb-4">
                   <div>
                     <div className="text-xs text-white/50">Rate</div>
-                    <div className="text-gold font-bold text-lg">{loan.rate}</div>
+                    <div className="text-gold font-bold">{loan.rate}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-xs text-white/50">Leverage</div>
-                    <div className="text-white font-bold text-lg">{loan.ltv}</div>
+                    <div className="text-white font-bold">{loan.ltv}</div>
                   </div>
                 </div>
                 <Link
-                  href="#contact"
+                  href="/lending"
                   className="block w-full py-2 border border-gold/30 text-gold rounded-lg hover:bg-gold/10 transition text-sm font-medium text-center"
                 >
-                  Get Quote
+                  View Details
                 </Link>
               </motion.div>
             ))}
           </div>
 
-          <div className="mt-12 text-center">
+          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="#contact"
+              href="/lending"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gold text-black font-bold rounded-lg hover:bg-gold/90 transition"
             >
-              Apply for Financing <ArrowRight className="w-5 h-5" />
+              <Calculator className="w-5 h-5" /> Explore All 50+ Loans
             </Link>
+            <a
+              href="tel:9496301858"
+              className="inline-flex items-center gap-2 px-8 py-4 border-2 border-gold text-gold font-bold rounded-lg hover:bg-gold/10 transition"
+            >
+              <Phone className="w-5 h-5" /> (949) 630-1858
+            </a>
           </div>
+
+          {/* Lending Quick Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
+          >
+            {[
+              { value: "24-48hrs", label: "Pre-Approval" },
+              { value: "51 States", label: "Coverage" },
+              { value: "$100M+", label: "Monthly Volume" },
+              { value: "500+", label: "Lender Network" },
+            ].map((stat, i) => (
+              <div key={i} className="bg-white/5 border border-white/10 rounded-lg p-4 text-center">
+                <div className="text-xl font-bold text-gold">{stat.value}</div>
+                <div className="text-sm text-white/60">{stat.label}</div>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
