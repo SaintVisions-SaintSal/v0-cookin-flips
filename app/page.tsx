@@ -265,21 +265,23 @@ export default function CookinFlipsHome() {
             </Link>
 
             {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-6">
+              <Link href="/research" className="text-white/80 hover:text-gold transition flex items-center gap-1">
+                <Brain className="w-4 h-4" />
+                SaintSal™
+              </Link>
+              <Link href="/analysis" className="text-white/80 hover:text-gold transition flex items-center gap-1">
+                <Calculator className="w-4 h-4" />
+                Deal Analyzer
+              </Link>
               <Link href="#services" className="text-white/80 hover:text-gold transition">
                 Services
-              </Link>
-              <Link href="#invest" className="text-white/80 hover:text-gold transition">
-                Invest
               </Link>
               <Link href="#lending" className="text-white/80 hover:text-gold transition">
                 Lending
               </Link>
               <Link href="#team" className="text-white/80 hover:text-gold transition">
                 Leadership
-              </Link>
-              <Link href="#contact" className="text-white/80 hover:text-gold transition">
-                Contact
               </Link>
               <Link
                 href="/portal"
@@ -307,18 +309,27 @@ export default function CookinFlipsHome() {
             >
               <div className="px-4 py-6 space-y-4">
                 <Link
+                  href="/research"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 py-2 text-gold font-medium"
+                >
+                  <Brain className="w-4 h-4" />
+                  SaintSal™ AI
+                </Link>
+                <Link
+                  href="/analysis"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 py-2 text-white/80 hover:text-gold"
+                >
+                  <Calculator className="w-4 h-4" />
+                  Deal Analyzer
+                </Link>
+                <Link
                   href="#services"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block py-2 text-white/80 hover:text-gold"
                 >
                   Services
-                </Link>
-                <Link
-                  href="#invest"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-2 text-white/80 hover:text-gold"
-                >
-                  Invest
                 </Link>
                 <Link
                   href="#lending"
