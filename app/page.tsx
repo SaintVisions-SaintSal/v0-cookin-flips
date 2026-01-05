@@ -59,7 +59,6 @@ const leadership = [
     image: "/images/DRIPLOGOSAINT_.png",
     linkedin: "https://linkedin.com/in/darrenbrown",
     affiliateLink: "/affiliate/darren",
-    phone: "(949) 630-1858",
     isCEO: true,
   },
   {
@@ -267,12 +266,17 @@ export default function CookinFlipsHome() {
             </Link>
 
             {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-6">
+              <Link href="/research" className="text-white/80 hover:text-gold transition flex items-center gap-1">
+                <Brain className="w-4 h-4" />
+                SaintSal™
+              </Link>
+              <Link href="/analysis" className="text-white/80 hover:text-gold transition flex items-center gap-1">
+                <Calculator className="w-4 h-4" />
+                Deal Analyzer
+              </Link>
               <Link href="#services" className="text-white/80 hover:text-gold transition">
                 Services
-              </Link>
-              <Link href="#invest" className="text-white/80 hover:text-gold transition">
-                Invest
               </Link>
               <Link href="#lending" className="text-white/80 hover:text-gold transition">
                 Lending
@@ -313,18 +317,27 @@ export default function CookinFlipsHome() {
             >
               <div className="px-4 py-6 space-y-4">
                 <Link
+                  href="/research"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 py-2 text-gold font-medium"
+                >
+                  <Brain className="w-4 h-4" />
+                  SaintSal™ AI
+                </Link>
+                <Link
+                  href="/analysis"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 py-2 text-white/80 hover:text-gold"
+                >
+                  <Calculator className="w-4 h-4" />
+                  Deal Analyzer
+                </Link>
+                <Link
                   href="#services"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block py-2 text-white/80 hover:text-gold"
                 >
                   Services
-                </Link>
-                <Link
-                  href="#invest"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-2 text-white/80 hover:text-gold"
-                >
-                  Invest
                 </Link>
                 <Link
                   href="#lending"
@@ -499,38 +512,6 @@ export default function CookinFlipsHome() {
                   </Link>
                 </div>
 
-                <motion.div
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.6 }}
-                  className="absolute -right-4 top-4 bg-black border border-gold/30 rounded-xl p-4 shadow-xl"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-gold/20 flex items-center justify-center">
-                      <Brain className="w-5 h-5 text-gold" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-gold">SaintSal™</div>
-                      <div className="text-xs text-white/60">AI Powered</div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.a
-                  href="tel:9496301858"
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7 }}
-                  className="absolute -left-4 bottom-20 bg-gold text-black rounded-xl p-4 shadow-xl hover:bg-gold/90 transition cursor-pointer"
-                >
-                  <div className="flex items-center gap-3">
-                    <Phone className="w-5 h-5" />
-                    <div>
-                      <div className="text-sm font-bold">(949) 630-1858</div>
-                      <div className="text-xs opacity-70">Call Now</div>
-                    </div>
-                  </div>
-                </motion.a>
               </motion.div>
             </div>
           </div>
@@ -1234,7 +1215,7 @@ export default function CookinFlipsHome() {
 
               <div className="space-y-6 mb-8">
                 <a
-                  href="tel:9496301858"
+                  href="tel:9499972097"
                   className="flex items-center gap-4 p-4 bg-white/5 rounded-xl hover:bg-white/10 transition"
                 >
                   <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center">
@@ -1242,7 +1223,7 @@ export default function CookinFlipsHome() {
                   </div>
                   <div>
                     <div className="text-sm text-white/50">Call Us</div>
-                    <div className="text-xl font-bold text-white">(949) 630-1858</div>
+                    <div className="text-xl font-bold text-white">(949) 997-2097</div>
                   </div>
                 </a>
 
@@ -1466,8 +1447,8 @@ export default function CookinFlipsHome() {
                 <Link href="#lending" className="block text-white/60 hover:text-gold transition">
                   Lending
                 </Link>
-                <Link href="#team" className="block text-white/60 hover:text-gold transition">
-                  Leadership
+                <Link href="/evaluate" className="block text-white/60 hover:text-gold transition">
+                  Deal Evaluator
                 </Link>
                 <Link href="/portal" className="block text-white/60 hover:text-gold transition">
                   Investor Portal
@@ -1479,8 +1460,8 @@ export default function CookinFlipsHome() {
             <div>
               <h4 className="text-gold font-bold mb-4">Contact</h4>
               <div className="space-y-2">
-                <a href="tel:9496301858" className="block text-white/60 hover:text-gold transition">
-                  (949) 630-1858
+                <a href="tel:9499972097" className="block text-white/60 hover:text-gold transition">
+                  (949) 997-2097
                 </a>
                 <a href="mailto:info@saintsal.ai" className="block text-white/60 hover:text-gold transition">
                   info@saintsal.ai

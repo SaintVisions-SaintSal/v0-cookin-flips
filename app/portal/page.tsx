@@ -612,10 +612,10 @@ export default function InvestorPortal() {
               Contact Us <ArrowRight className="w-5 h-5" />
             </Link>
             <a
-              href="tel:9496301858"
+              href="tel:9499972097"
               className="px-8 py-4 border-2 border-gold text-gold font-bold rounded-lg hover:bg-gold/10 transition"
             >
-              Call (949) 630-1858
+              Call (949) 997-2097
             </a>
           </div>
         </div>
