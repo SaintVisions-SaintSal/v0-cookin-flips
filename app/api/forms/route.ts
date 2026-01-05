@@ -23,6 +23,21 @@ export async function POST(req: NextRequest) {
       loanAmount,
       loanType,
       referralCode,
+      // Extended lending fields
+      creditScore,
+      propertyValue,
+      monthlyRent,
+      calculatedResults,
+      // Merchant services fields
+      businessName,
+      monthlyVolume,
+      currentProcessor,
+      // Payroll fields
+      numberOfEmployees,
+      payrollFrequency,
+      currentProvider,
+      // Service type
+      serviceType,
     } = body
 
     // Validate required fields
@@ -60,16 +75,108 @@ export async function POST(req: NextRequest) {
         break
 
       case "lending":
-        subject = `🏦 New Loan Inquiry from ${name}`
+        subject = `🏦 New ${loanType || 'Loan'} Inquiry from ${name}`
         htmlContent = `
-          <h2>New Lending Inquiry</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
-          <p><strong>Loan Type:</strong> ${loanType || "Not specified"}</p>
-          <p><strong>Loan Amount:</strong> $${loanAmount?.toLocaleString() || "Not specified"}</p>
-          ${propertyAddress ? `<p><strong>Property:</strong> ${propertyAddress}, ${propertyCity}, ${propertyState}</p>` : ""}
-          <p><strong>Message:</strong> ${message || "No message"}</p>
+          <div style="font-family: Arial, sans-serif;">
+            <h2 style="color: #D4AF37; border-bottom: 2px solid #D4AF37; padding-bottom: 10px;">New Lending Inquiry</h2>
+
+            <h3 style="color: #333; margin-top: 20px;">Contact Information</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Name:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${name}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Email:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="mailto:${email}">${email}</a></td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Phone:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="tel:${phone}">${phone || "Not provided"}</a></td></tr>
+            </table>
+
+            <h3 style="color: #333; margin-top: 20px;">Loan Details</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Loan Type:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee; color: #D4AF37; font-weight: bold;">${loanType || "Not specified"}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Loan Amount:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">$${loanAmount?.toLocaleString() || "Not specified"}</td></tr>
+              ${propertyValue ? `<tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Property Value:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">$${propertyValue?.toLocaleString()}</td></tr>` : ""}
+              ${creditScore ? `<tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Credit Score:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${creditScore}</td></tr>` : ""}
+              ${monthlyRent ? `<tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Monthly Rent/NOI:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">$${monthlyRent?.toLocaleString()}</td></tr>` : ""}
+            </table>
+
+            ${propertyAddress ? `
+            <h3 style="color: #333; margin-top: 20px;">Property Information</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Address:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${propertyAddress}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>City/State:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${propertyCity || ""}, ${propertyState || ""}</td></tr>
+              ${propertyType ? `<tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Property Type:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${propertyType}</td></tr>` : ""}
+            </table>
+            ` : ""}
+
+            ${calculatedResults ? `
+            <h3 style="color: #333; margin-top: 20px;">Calculator Results</h3>
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 8px;">
+              <p><strong>Estimated Rate:</strong> ${calculatedResults.rate?.toFixed(2)}%</p>
+              <p><strong>Monthly Payment:</strong> $${calculatedResults.monthlyPayment?.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+              <p><strong>Total Interest:</strong> $${calculatedResults.totalInterest?.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+              ${calculatedResults.ltv ? `<p><strong>LTV:</strong> ${calculatedResults.ltv?.toFixed(1)}%</p>` : ""}
+              ${calculatedResults.dscr ? `<p><strong>DSCR:</strong> ${calculatedResults.dscr?.toFixed(2)}</p>` : ""}
+              ${calculatedResults.flipProfit !== undefined ? `<p><strong>Est. Flip Profit:</strong> $${calculatedResults.flipProfit?.toLocaleString()}</p>` : ""}
+            </div>
+            ` : ""}
+
+            ${message ? `
+            <h3 style="color: #333; margin-top: 20px;">Additional Notes</h3>
+            <p style="background: #f9f9f9; padding: 15px; border-radius: 8px;">${message}</p>
+            ` : ""}
+
+            <div style="margin-top: 30px; padding: 15px; background: #D4AF37; border-radius: 8px; color: #000;">
+              <strong>🔥 HOT LEAD - Contact within 24 hours!</strong>
+            </div>
+          </div>
+        `
+        break
+
+      case "merchant":
+        subject = `💳 New Merchant Services Inquiry from ${businessName || name}`
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif;">
+            <h2 style="color: #D4AF37; border-bottom: 2px solid #D4AF37; padding-bottom: 10px;">New Merchant Services Request</h2>
+
+            <h3 style="color: #333; margin-top: 20px;">Contact Information</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Name:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${name}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Business:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${businessName || "Not provided"}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Email:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="mailto:${email}">${email}</a></td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Phone:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="tel:${phone}">${phone || "Not provided"}</a></td></tr>
+            </table>
+
+            <h3 style="color: #333; margin-top: 20px;">Processing Details</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Monthly Volume:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">$${monthlyVolume?.toLocaleString() || "Not specified"}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Current Processor:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${currentProcessor || "Not specified"}</td></tr>
+            </table>
+
+            ${message ? `<p style="margin-top: 20px;"><strong>Message:</strong> ${message}</p>` : ""}
+          </div>
+        `
+        break
+
+      case "payroll":
+        subject = `📋 New CookinPayroll Inquiry from ${businessName || name}`
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif;">
+            <h2 style="color: #D4AF37; border-bottom: 2px solid #D4AF37; padding-bottom: 10px;">New CookinPayroll Request</h2>
+
+            <h3 style="color: #333; margin-top: 20px;">Contact Information</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Name:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${name}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Business:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${businessName || "Not provided"}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Email:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="mailto:${email}">${email}</a></td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Phone:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;"><a href="tel:${phone}">${phone || "Not provided"}</a></td></tr>
+            </table>
+
+            <h3 style="color: #333; margin-top: 20px;">Payroll Details</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong># of Employees:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${numberOfEmployees || "Not specified"}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Pay Frequency:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${payrollFrequency || "Not specified"}</td></tr>
+              <tr><td style="padding: 8px; border-bottom: 1px solid #eee;"><strong>Current Provider:</strong></td><td style="padding: 8px; border-bottom: 1px solid #eee;">${currentProvider || "Not specified"}</td></tr>
+            </table>
+
+            ${message ? `<p style="margin-top: 20px;"><strong>Message:</strong> ${message}</p>` : ""}
+          </div>
         `
         break
 
