@@ -19,7 +19,6 @@ import {
   Send,
   MapPin,
   Users,
-  ExternalLink,
   CheckCircle2,
   TrendingUp,
 } from "lucide-react"
@@ -73,7 +72,7 @@ export default function CookinFlipsHome() {
               <Image src="/images/TRANSPARENTSAINTSALLOGO.png" alt="Logo" width={36} height={36} className="object-contain" />
               <div className="flex flex-col leading-tight">
                 <span className="text-lg font-bold"><span className="text-gold">Cookin'</span><span className="text-white">Flips</span></span>
-                <span className="text-[9px] text-white/40">by <span className="text-white">Flip</span><span className="text-cyan-400">Effective</span></span>
+                <span className="text-[9px] text-white/40">Powered by SaintSal™ AI</span>
               </div>
             </Link>
 
@@ -228,8 +227,8 @@ export default function CookinFlipsHome() {
             <Link href="/lending" className="px-6 py-3 bg-gold text-black font-semibold rounded-lg hover:bg-gold/90 transition">
               Explore All Products
             </Link>
-            <a href="tel:9496301858" className="px-6 py-3 border border-white/20 text-white font-medium rounded-lg hover:bg-white/5 transition flex items-center gap-2">
-              <Phone className="w-4 h-4" /> (949) 630-1858
+            <a href="tel:9499972097" className="px-6 py-3 border border-white/20 text-white font-medium rounded-lg hover:bg-white/5 transition flex items-center gap-2">
+              <Phone className="w-4 h-4" /> (949) 997-2097
             </a>
           </div>
         </div>
@@ -241,20 +240,45 @@ export default function CookinFlipsHome() {
           <h2 className="text-2xl font-bold text-white mb-8 text-center">Leadership</h2>
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* Darren Brown - CEO */}
-            <div className="p-6 bg-[#111] border border-cyan-500/30 rounded-xl">
+            {/* Ryan Capatosto - CEO & Founder */}
+            <div className="p-6 bg-[#111] border border-gold/30 rounded-xl">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center">
+                  <Image src="/images/TRANSPARENTSAINTSALLOGO.png" alt="Ryan" width={48} height={48} className="object-contain" />
+                </div>
+                <div>
+                  <div className="px-2 py-0.5 bg-gold text-black text-xs font-bold rounded mb-1 inline-block">CEO & FOUNDER</div>
+                  <h3 className="text-xl font-bold text-white">Ryan Capatosto</h3>
+                  <p className="text-gold text-sm">SaintSal™ AI Creator</p>
+                </div>
+              </div>
+              <p className="text-white/60 text-sm mb-4">
+                CEO & Founder of CookinFlips. Creator of SaintSal™ AI. US Patent #10,290,222. Former Goldman Sachs & JP Morgan. $1.4M+ personally invested.
+              </p>
+              <div className="flex gap-2">
+                <a href="mailto:ryan@saintsal.ai" className="px-4 py-2 bg-gold text-black font-semibold rounded-lg text-sm hover:bg-gold/90 transition">
+                  Contact
+                </a>
+                <a href="https://saintsal.ai" target="_blank" rel="noopener noreferrer" className="px-4 py-2 border border-white/20 text-white rounded-lg text-sm hover:bg-white/5 transition">
+                  SaintSal.ai
+                </a>
+              </div>
+            </div>
+
+            {/* Darren Brown - CRO */}
+            <div className="p-6 bg-[#111] border border-white/10 rounded-xl">
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-16 h-16 bg-cyan-500/10 rounded-full flex items-center justify-center">
                   <Image src="/images/DRIPLOGOSAINT_.png" alt="Darren" width={48} height={48} className="object-contain" />
                 </div>
                 <div>
-                  <div className="px-2 py-0.5 bg-cyan-500 text-black text-xs font-bold rounded mb-1 inline-block">CEO</div>
+                  <div className="px-2 py-0.5 bg-cyan-500 text-black text-xs font-bold rounded mb-1 inline-block">CRO</div>
                   <h3 className="text-xl font-bold text-white">Darren Brown</h3>
-                  <p className="text-cyan-400 text-sm">FlipEffective</p>
+                  <p className="text-cyan-400 text-sm">Chief Relations Officer</p>
                 </div>
               </div>
               <p className="text-white/60 text-sm mb-4">
-                CEO of FlipEffective. $3B+ in distressed assets resolved. $1B+ capital raised. Leading nationwide expansion.
+                Chief Relations Officer & Director of Acquisitions. $3B+ in distressed assets resolved. $1B+ capital raised. Leading nationwide expansion.
               </p>
               <div className="flex gap-2">
                 <Link href="/affiliate/darren" className="px-4 py-2 bg-cyan-500 text-black font-semibold rounded-lg text-sm hover:bg-cyan-400 transition">
@@ -262,31 +286,6 @@ export default function CookinFlipsHome() {
                 </Link>
                 <a href="tel:9496301858" className="px-4 py-2 border border-white/20 text-white rounded-lg text-sm hover:bg-white/5 transition">
                   Call
-                </a>
-              </div>
-            </div>
-
-            {/* Ryan Capatosto - Founder */}
-            <div className="p-6 bg-[#111] border border-gold/30 rounded-xl">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center">
-                  <Image src="/images/TRANSPARENTSAINTSALLOGO.png" alt="Ryan" width={48} height={48} className="object-contain" />
-                </div>
-                <div>
-                  <div className="px-2 py-0.5 bg-gold text-black text-xs font-bold rounded mb-1 inline-block">FOUNDER</div>
-                  <h3 className="text-xl font-bold text-white">Ryan Capatosto</h3>
-                  <p className="text-gold text-sm">SaintSal™ AI Creator</p>
-                </div>
-              </div>
-              <p className="text-white/60 text-sm mb-4">
-                Creator of SaintSal™ AI. US Patent #10,290,222. Former Goldman Sachs & JP Morgan. $1.4M+ personally invested.
-              </p>
-              <div className="flex gap-2">
-                <a href="https://saintsal.ai" target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gold text-black font-semibold rounded-lg text-sm hover:bg-gold/90 transition flex items-center gap-1">
-                  <ExternalLink className="w-3 h-3" /> SaintSal.ai
-                </a>
-                <a href="mailto:ryan@saintsal.ai" className="px-4 py-2 border border-white/20 text-white rounded-lg text-sm hover:bg-white/5 transition">
-                  Email
                 </a>
               </div>
             </div>
@@ -415,7 +414,6 @@ export default function CookinFlipsHome() {
           <div className="flex items-center gap-2">
             <Image src="/images/TRANSPARENTSAINTSALLOGO.png" alt="Logo" width={32} height={32} className="object-contain" />
             <span className="text-sm"><span className="text-gold font-semibold">Cookin'</span><span className="text-white">Flips</span></span>
-            <span className="text-white/30 text-xs">by <span className="text-white">Flip</span><span className="text-cyan-400">Effective</span></span>
           </div>
           <div className="text-white/30 text-xs">© 2025 Saint Vision Technologies • SaintSal™ AI • Patent #10,290,222</div>
         </div>
