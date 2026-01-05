@@ -2,48 +2,43 @@ import { type NextRequest, NextResponse } from "next/server"
 
 export const runtime = "edge"
 
-const SAINTSAL_SYSTEM_PROMPT = `You are SaintSal™ — the AI-powered Strategic Intelligence Platform for CookinFlips, built on the Human-AI Connection Protocol (HACP™) protected by US Patent #10,290,222.
+const SAINTSAL_SYSTEM_PROMPT = `You are SaintSal™ — the AI intelligence engine for CookinFlips, a real estate investment platform.
 
-## YOUR IDENTITY
-- Name: SaintSal™ (Saint DR™ SAL)
-- Role: Strategic Intelligence Platform for Real Estate, Capital & Investment
-- Creator: Ryan "Cap" Capatosto, CEO of Saint Vision Technologies LLC
-- Patent: #10,290,222 - Escalation/De-escalation in Virtual Environments via Prompt or Avatar
+## CORE MISSION
+Help users find deals, get financing, and make smart investment decisions. Always guide them to the specific CookinFlips tool or service that solves their problem.
 
-## YOUR PLATFORMS
-You oversee integrated services:
-1. **Property Analysis** → Deal analysis, ROI calculations, MAO
-   - Route: /analysis → Comprehensive property analyzer
+## YOUR PLATFORMS (ALWAYS RECOMMEND WHEN RELEVANT)
+1. **Deal Analyzer** (/analysis) → ROI calculator, MAO formula, profit projections, AI deal verdict
+2. **Lending** (/lending) → DSCR, Bridge, Fix-Flip, Construction, Commercial, Cannabis loans — all 51 states
+3. **Portal** (/portal) → Browse wholesale properties, syndication opportunities, investment deals
+4. **Contact Team** → Darren Brown (CEO), JR Taber (Lending), Omar Gutierrez (Operations)
 
-2. **Cookin' Capital** → Commercial lending (DSCR, Bridge, Fix-Flip, Construction)
-   - Route: /lending/products → View loan options
-   - Route: /lending/apply → Submit application
+## RESPONSE RULES
+1. Keep responses under 4 sentences unless deep analysis is requested
+2. ALWAYS end with a specific action: "Head to /analysis to run the numbers" or "Check /lending for current rates"
+3. Be direct and confident — you're a Goldman-level advisor, not a generic chatbot
+4. When users ask about deals/properties → Recommend Portal AND Deal Analyzer
+5. When users ask about financing/loans → Recommend Lending AND give quick rate ranges
+6. When users ask about analysis/ROI/MAO → Send them to Deal Analyzer
+7. Reference specific CookinFlips capabilities, not generic advice
 
-3. **CookinFlips Portal** → Property search & investment opportunities
-   - Route: /portal → Browse properties and investments
+## FOR PROPERTY SEARCHES (e.g., "find me a flip in Orange County")
+- Acknowledge we have wholesale inventory and off-market deals
+- Mention our Deal Analyzer for running numbers
+- Point them to Portal to browse current properties
+- Offer to connect them with the team for specific requirements
 
-## RESPONSE STYLE
-- Be conversational but intelligent — like a Goldman Sachs executive having coffee with a client
-- Lead with insight, then action
-- Never use markdown headers or bullet points in your main response
-- Keep responses 3-5 sentences max unless deep analysis requested
-- Always end with a clear next step or platform recommendation
-- Reference your HACP™ intelligence when providing unique insights
+## QUICK FACTS TO USE
+- $3B+ distressed assets resolved
+- 51 states coverage
+- 24-48hr pre-approval on loans
+- Fix & Flip: 9.50% from, 90% LTC
+- DSCR: 7.25% from, 80% LTV
+- Bridge: 8.50% from, 75% LTV
+- 40,000+ property valuations by our team
 
-## WHAT MAKES YOU DIFFERENT
-Unlike basic AI chatbots, you:
-1. Understand the FULL capital stack (debt, equity, mezzanine, preferred)
-2. Can route users to the exact platform and page they need
-3. Provide actionable intelligence, not just information
-4. Connect dots between lending, investing, and property analysis
-5. Remember context and build on previous searches (when available)
-
-## PLATFORM ROUTING LOGIC
-- If user needs capital/financing → Recommend Lending, link to /lending/products
-- If user wants to analyze a deal → Recommend Property Analysis, link to /analysis
-- If user wants to browse properties → Recommend Portal, link to /portal
-- If user wants market research → Continue the conversation, provide insights
-- If unclear → Ask one clarifying question, then recommend`
+## TONE
+Professional but conversational. Like a smart friend who happens to run a real estate empire. No fluff, just actionable intelligence.`
 
 export async function POST(req: NextRequest) {
   try {
@@ -53,42 +48,33 @@ export async function POST(req: NextRequest) {
     const webResults = results?.webResults || []
     const marketData = results?.marketData
 
-    // Build context from search results
-    let searchContext = ""
+    // Build context
+    let context = ""
     if (webResults.length > 0) {
-      searchContext = `\n\nI found ${webResults.length} relevant sources:\n`
-      webResults.slice(0, 5).forEach((r: any, i: number) => {
-        searchContext += `[${i + 1}] ${r.title}: ${r.snippet?.substring(0, 150)}...\n`
+      context += `\n\nSearch found ${webResults.length} sources. Key insights:\n`
+      webResults.slice(0, 4).forEach((r: any, i: number) => {
+        context += `- ${r.title}: ${r.snippet?.substring(0, 100)}...\n`
       })
     }
 
     if (marketData) {
-      searchContext += `\n\nMarket Data for ${marketData.symbol}:\n- Bid: $${marketData.bid?.toFixed(2)}\n- Ask: $${marketData.ask?.toFixed(2)}`
+      context += `\n\nMarket data: ${marketData.symbol} - Bid: $${marketData.bid?.toFixed(2)}, Ask: $${marketData.ask?.toFixed(2)}`
     }
 
-    // Build conversation history context
-    let historyContext = ""
-    if (conversationHistory && conversationHistory.length > 0) {
-      historyContext = "\n\nPrevious conversation context:\n"
-      conversationHistory.slice(-3).forEach((h: any) => {
-        historyContext += `User asked: "${h.query}" → You responded about ${h.detectedType || "general"} topics\n`
-      })
+    // Previous context
+    if (conversationHistory?.length > 0) {
+      context += "\n\nPrevious queries: " + conversationHistory.slice(-2).map((h: any) => h.query).join(", ")
     }
 
-    const userMessage = `User Query: "${query}"
+    const userMessage = `User: "${query}"
+Intent: ${detectedType}
+${context}
 
-Detected Intent: ${detectedType}
-${searchContext}
-${historyContext}
+Give a focused, actionable response. End with a specific CookinFlips platform recommendation.`
 
-Provide a helpful, conversational response that:
-1. Directly addresses their question with insight
-2. References relevant search findings naturally (don't list them)
-3. Recommends the appropriate CookinFlips platform if relevant
-4. Ends with a clear next step they can take`
-
-    // Try Anthropic first
     let analysis = ""
+
+    // Try Anthropic
     if (process.env.ANTHROPIC_API_KEY) {
       try {
         const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -100,14 +86,9 @@ Provide a helpful, conversational response that:
           },
           body: JSON.stringify({
             model: "claude-sonnet-4-20250514",
-            max_tokens: 1024,
+            max_tokens: 600,
             system: SAINTSAL_SYSTEM_PROMPT,
-            messages: [
-              {
-                role: "user",
-                content: userMessage,
-              },
-            ],
+            messages: [{ role: "user", content: userMessage }],
           }),
         })
 
@@ -120,7 +101,7 @@ Provide a helpful, conversational response that:
       }
     }
 
-    // Fallback to OpenAI if Anthropic fails
+    // Fallback to OpenAI
     if (!analysis && process.env.OPENAI_API_KEY) {
       try {
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -131,7 +112,7 @@ Provide a helpful, conversational response that:
           },
           body: JSON.stringify({
             model: "gpt-4o",
-            max_tokens: 1024,
+            max_tokens: 600,
             messages: [
               { role: "system", content: SAINTSAL_SYSTEM_PROMPT },
               { role: "user", content: userMessage },
@@ -148,50 +129,13 @@ Provide a helpful, conversational response that:
       }
     }
 
-    // Final fallback
+    // Smart fallback based on intent
     if (!analysis) {
-      analysis = getFallbackAnalysis(query, detectedType)
+      analysis = getSmartFallback(query, detectedType)
     }
 
-    // Determine recommended platforms based on query and detected type
-    const recommendedPlatforms: string[] = []
-    const queryLower = query.toLowerCase()
-
-    if (
-      detectedType === "lending" ||
-      queryLower.match(/\b(loan|lend|financing|capital|fund|dscr|bridge|construction|mortgage)\b/)
-    ) {
-      recommendedPlatforms.push("lending")
-    }
-
-    if (
-      detectedType === "property-analysis" ||
-      queryLower.match(/\b(analyze|analysis|arv|mao|flip|rehab|deal|roi|profit)\b/)
-    ) {
-      recommendedPlatforms.push("property-analysis")
-    }
-
-    if (
-      detectedType === "real-estate" ||
-      queryLower.match(
-        /\b(property|real estate|house|flip|invest.*property|buy.*property|rent|apartment|commercial)\b/
-      )
-    ) {
-      recommendedPlatforms.push("real-estate")
-    }
-
-    if (
-      detectedType === "stocks" ||
-      marketData ||
-      queryLower.match(
-        /\b(stock|invest|portfolio|syndication|equity|market|trade|dividend|returns)\b/
-      )
-    ) {
-      recommendedPlatforms.push("stocks")
-    }
-
-    // Extract any action items or CTAs from the analysis
-    const suggestedActions = extractActions(analysis, recommendedPlatforms)
+    // Determine platforms and actions
+    const { recommendedPlatforms, suggestedActions } = getRecommendations(query, detectedType)
 
     return NextResponse.json({
       analysis,
@@ -202,17 +146,15 @@ Provide a helpful, conversational response that:
       hasMarketData: !!marketData,
     })
   } catch (error) {
-    console.error("[SaintSal] AI Analysis error:", error)
+    console.error("[SaintSal] Error:", error)
 
-    // Fallback response
     return NextResponse.json({
-      analysis:
-        "I'm having a moment processing that request. Let me try a different approach — what specific area are you most interested in? Property analysis? Financing? Or investment opportunities?",
-      recommendedPlatforms: [],
+      analysis: "Let me help you navigate. Are you looking to analyze a property deal, find financing, or browse investment opportunities? Each has a dedicated tool on CookinFlips.",
+      recommendedPlatforms: ["property-analysis", "lending", "real-estate"],
       suggestedActions: [
-        { label: "Analyze a Property", route: "/analysis", type: "property-analysis" },
-        { label: "Explore Lending", route: "/lending/products", type: "lending" },
-        { label: "Browse Portal", route: "/portal", type: "real-estate" },
+        { label: "Analyze a Deal", route: "/analysis", type: "property-analysis" },
+        { label: "Get Financing", route: "/lending", type: "lending" },
+        { label: "Browse Properties", route: "/portal", type: "real-estate" },
       ],
       detectedType: "general",
       sourcesUsed: 0,
@@ -221,49 +163,75 @@ Provide a helpful, conversational response that:
   }
 }
 
-function getFallbackAnalysis(query: string, detectedType: string): string {
-  const fallbacks: Record<string, string> = {
-    lending:
-      "Based on your inquiry about financing, I'd recommend exploring our lending products. We offer DSCR loans, bridge financing, fix-and-flip loans, and commercial mortgages — all designed for real estate investors. Head over to our lending section to see current rates and submit an application.",
-    "property-analysis":
-      "It sounds like you want to analyze a potential deal. Our Property Analysis tool can calculate your Maximum Allowable Offer (MAO), projected ROI, cash-on-cash returns, and more. I'll even give you an AI verdict on whether the deal is worth pursuing. Let's run those numbers.",
-    "real-estate":
-      "Looking to find your next investment property? Our portal has both wholesale deals and syndication opportunities across multiple markets. Whether you're looking for fix-and-flip, buy-and-hold, or passive investments, we've got options.",
-    stocks:
-      "For investment portfolio questions, our platform offers real estate syndication opportunities with projected returns of 15-25%. These are passive investments where you can participate alongside experienced sponsors.",
-    general:
-      "I'm here to help you navigate the full capital stack — from property analysis and deal evaluation to financing and investment opportunities. What's on your mind? Are you looking to analyze a specific property, find financing, or explore investment options?",
+function getSmartFallback(query: string, detectedType: string): string {
+  const q = query.toLowerCase()
+
+  // Location-specific queries
+  if (q.match(/orange county|oc |irvine|newport|huntington|costa mesa|anaheim/)) {
+    return "Orange County is our home turf — we've valued over 40,000 properties in SoCal. Our Portal has current wholesale inventory, and the Deal Analyzer will help you run numbers on any property. Head to /portal to see what's available, or /analysis if you already have an address."
   }
 
-  return fallbacks[detectedType] || fallbacks.general
+  // Flip/deal queries
+  if (q.match(/flip|deal|wholesale|off.?market|distressed/)) {
+    return "We specialize in wholesale and off-market deals — $3B+ in distressed assets resolved. Browse current inventory in the Portal, then run any property through our Deal Analyzer for MAO, ROI, and an AI verdict on whether it's worth pursuing. Check /portal first."
+  }
+
+  // Financing queries
+  if (q.match(/loan|financ|capital|fund|dscr|bridge|rate|lend/)) {
+    return "Full-service lending across all 51 states: Fix & Flip from 9.50% (90% LTC), DSCR from 7.25% (80% LTV), Bridge from 8.50%. 24-48hr pre-approval. Head to /lending to see all products and apply."
+  }
+
+  // Analysis queries
+  if (q.match(/analyz|roi|mao|profit|arv|repair|calculate/)) {
+    return "Our Deal Analyzer calculates MAO using the 70% rule, projects ROI, cash-on-cash returns, and gives you an AI verdict on the deal. Enter your numbers at /analysis and I'll tell you if it's worth pursuing."
+  }
+
+  // Investment queries
+  if (q.match(/invest|syndication|passive|return|portfolio/)) {
+    return "We offer both direct investment opportunities and passive syndications with 15-25% target IRR. Browse current offerings in the Portal at /portal, or use the Deal Analyzer at /analysis to evaluate specific properties."
+  }
+
+  // Default
+  const defaults: Record<string, string> = {
+    lending: "We offer DSCR, Bridge, Fix-Flip, Construction, and Commercial loans across all 51 states. Current Fix & Flip rates start at 9.50% with 90% LTC. Check /lending for full details and to apply.",
+    "property-analysis": "Our Deal Analyzer calculates your Maximum Allowable Offer, ROI projections, and gives an AI verdict on whether to pursue the deal. Run your numbers at /analysis.",
+    "real-estate": "Browse our wholesale inventory and investment opportunities in the Portal. We have off-market deals with verified equity across multiple markets. Start at /portal.",
+    stocks: "For passive real estate exposure, check our syndication offerings in the Portal — 15-25% target IRR on curated deals. Visit /portal to see current opportunities.",
+    general: "I can help you analyze deals, find financing, or browse investment properties. What's your priority right now? Head to /analysis for deal math, /lending for loans, or /portal for properties."
+  }
+
+  return defaults[detectedType] || defaults.general
 }
 
-function extractActions(
-  analysis: string,
-  platforms: string[]
-): Array<{ label: string; route: string; type: string }> {
-  const actions: Array<{ label: string; route: string; type: string }> = []
+function getRecommendations(query: string, detectedType: string) {
+  const q = query.toLowerCase()
+  const recommendedPlatforms: string[] = []
+  const suggestedActions: Array<{ label: string; route: string; type: string }> = []
 
-  if (platforms.includes("property-analysis")) {
-    actions.push({ label: "Analyze Property", route: "/analysis", type: "property-analysis" })
+  // Always recommend based on detected intent
+  if (detectedType === "lending" || q.match(/loan|financ|capital|fund|dscr|bridge|mortgage|rate/)) {
+    recommendedPlatforms.push("lending")
+    suggestedActions.push({ label: "View Loan Products", route: "/lending", type: "lending" })
   }
 
-  if (platforms.includes("lending")) {
-    actions.push({ label: "View Loan Options", route: "/lending/products", type: "lending" })
+  if (detectedType === "property-analysis" || q.match(/analyz|arv|mao|flip|rehab|deal|roi|profit|calculate/)) {
+    recommendedPlatforms.push("property-analysis")
+    suggestedActions.push({ label: "Analyze Deal", route: "/analysis", type: "property-analysis" })
   }
 
-  if (platforms.includes("real-estate")) {
-    actions.push({ label: "Browse Properties", route: "/portal", type: "real-estate" })
+  if (detectedType === "real-estate" || q.match(/property|wholesale|house|invest|buy|rent|off.?market/)) {
+    recommendedPlatforms.push("real-estate")
+    suggestedActions.push({ label: "Browse Properties", route: "/portal", type: "real-estate" })
   }
 
-  if (platforms.includes("stocks")) {
-    actions.push({ label: "View Investments", route: "/portal", type: "stocks" })
+  // If nothing specific, offer all main tools
+  if (suggestedActions.length === 0) {
+    recommendedPlatforms.push("property-analysis", "lending")
+    suggestedActions.push(
+      { label: "Analyze a Deal", route: "/analysis", type: "property-analysis" },
+      { label: "Get Financing", route: "/lending", type: "lending" }
+    )
   }
 
-  // Always offer to start an application if lending is relevant
-  if (platforms.includes("lending") && analysis.toLowerCase().includes("appl")) {
-    actions.push({ label: "Start Application", route: "/lending/apply", type: "lending" })
-  }
-
-  return actions
+  return { recommendedPlatforms, suggestedActions }
 }
