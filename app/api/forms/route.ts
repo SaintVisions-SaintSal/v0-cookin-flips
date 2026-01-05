@@ -131,8 +131,8 @@ export async function POST(req: NextRequest) {
             </p>
             <ul style="color: #ccc; line-height: 1.8;">
               <li>Browse our <a href="https://cookinflips.com/portal" style="color: #D4AF37;">Investment Portal</a></li>
-              <li>Call us at <a href="tel:9496301858" style="color: #D4AF37;">(949) 630-1858</a></li>
-              <li>Try our AI assistant: <a href="tel:9499972097" style="color: #D4AF37;">(949) 997-2097</a></li>
+              <li>Call us at <a href="tel:9499972097" style="color: #D4AF37;">(949) 997-2097</a></li>
+              <li>Try our AI assistant: <a href="https://saintsal.ai" style="color: #D4AF37;">SaintSal.ai</a></li>
               <li>Visit <a href="https://saintsal.ai" style="color: #D4AF37;">SaintSal.ai</a></li>
             </ul>
             <div style="margin-top: 30px; padding: 20px; background: #111; border-radius: 8px; border: 1px solid #333;">
