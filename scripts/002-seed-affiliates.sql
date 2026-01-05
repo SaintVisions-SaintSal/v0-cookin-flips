@@ -19,7 +19,7 @@ INSERT INTO affiliates (
 (
   'Darren Brown',
   'darren@flipeffective.com',
-  '(949) 630-1858',
+  NULL,
   'darren',
   'CEO of FlipEffective | President of SaintSal™ Affiliate Program',
   'Chief Executive Officer of FlipEffective and President of the SaintSal™ Trademarked Affiliate Program. Under Darren''s leadership, the firm has managed and co-invested in multiple institutional investment funds, raising over $1 billion in debt and equity financing. His strategic vision has facilitated the acquisition and resolution of distressed residential assets exceeding $3 billion since 2007. Now leading FlipEffective''s expansion and affiliate team recruitment nationwide.',
