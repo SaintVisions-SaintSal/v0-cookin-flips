@@ -18,6 +18,7 @@ import {
   Heart,
   Download,
   Loader2,
+  Wallet,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
@@ -51,7 +52,7 @@ interface Offering {
 }
 
 export default function InvestorPortal() {
-  const [activeTab, setActiveTab] = useState<"properties" | "investments" | "lending">("properties")
+  const [activeTab, setActiveTab] = useState<"properties" | "investments" | "lending" | "banking">("properties")
   const [savedProperties, setSavedProperties] = useState<string[]>([])
   const [filterCity, setFilterCity] = useState("")
   const [filterType, setFilterType] = useState("")
@@ -311,16 +312,17 @@ export default function InvestorPortal() {
       {/* Tabs */}
       <div className="sticky top-16 z-40 bg-[#0a0a0a] border-b border-gold/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-8">
+          <div className="flex gap-8 overflow-x-auto">
             {[
               { id: "properties", label: "Wholesale Properties", icon: Building2 },
               { id: "investments", label: "Investment Offerings", icon: TrendingUp },
               { id: "lending", label: "Lending Products", icon: DollarSign },
+              { id: "banking", label: "Banking", icon: Wallet },
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as "properties" | "investments" | "lending")}
-                className={`flex items-center gap-2 py-4 border-b-2 transition ${
+                onClick={() => setActiveTab(tab.id as "properties" | "investments" | "lending" | "banking")}
+                className={`flex items-center gap-2 py-4 border-b-2 transition whitespace-nowrap ${
                   activeTab === tab.id ? "border-gold text-gold" : "border-transparent text-white/60 hover:text-white"
                 }`}
               >
@@ -544,6 +546,26 @@ export default function InvestorPortal() {
                     )}
                   </motion.div>
                 ))}
+              </div>
+            )}
+
+            {/* Banking Tab */}
+            {activeTab === "banking" && (
+              <div className="text-center py-12">
+                <div className="max-w-2xl mx-auto">
+                  <Wallet className="w-16 h-16 text-gold mx-auto mb-4" />
+                  <h3 className="text-2xl font-bold text-white mb-3">Banking Platform</h3>
+                  <p className="text-white/60 mb-6">
+                    Access your full banking dashboard with accounts, transactions, cards, and payments.
+                  </p>
+                  <Link
+                    href="/banking"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gold text-black font-semibold rounded-lg hover:bg-gold/90 transition"
+                  >
+                    Open Banking Dashboard
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </div>
               </div>
             )}
 
