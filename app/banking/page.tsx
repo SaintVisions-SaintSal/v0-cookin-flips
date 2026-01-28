@@ -5,33 +5,20 @@ import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, Loader2 } from "lucide-react"
 
+const UNIT_JWT_TOKEN = "v2.public.eyJyb2xlIjoiYWRtaW4iLCJyb2xlcyI6WyJhZG1pbiJdLCJ1c2VySWQiOiI0NzE3NSIsInN1YiI6InJ5YW5AY29va2luLmlvIiwiZXhwIjoiMjAyNy0wMS0yOFQyMDoxMzoyNC43MDlaIiwianRpIjoiNTc2NTI4Iiwib3JnSWQiOiI4OTYwIiwic2NvcGUiOiJhcHBsaWNhdGlvbnMgYXBwbGljYXRpb25zLXdyaXRlIGN1c3RvbWVycyBjdXN0b21lcnMtd3JpdGUgY3VzdG9tZXItdGFncy13cml0ZSBjdXN0b21lci10b2tlbi13cml0ZSBhY2NvdW50cyBhY2NvdW50cy13cml0ZSBhY2NvdW50LWhvbGRzIGFjY291bnQtaG9sZHMtd3JpdGUgY2FyZHMgY2FyZHMtd3JpdGUgY2FyZHMtc2Vuc2l0aXZlIGNhcmRzLXNlbnNpdGl2ZS13cml0ZSB0cmFuc2FjdGlvbnMgdHJhbnNhY3Rpb25zLXdyaXRlIGF1dGhvcml6YXRpb25zIHN0YXRlbWVudHMgcGF5bWVudHMgcGF5bWVudHMtd3JpdGUgcGF5bWVudHMtd3JpdGUtY291bnRlcnBhcnR5IHBheW1lbnRzLXdyaXRlLWxpbmtlZC1hY2NvdW50IGFjaC1wYXltZW50cy13cml0ZSB3aXJlLXBheW1lbnRzLXdyaXRlIHJlcGF5bWVudHMgcGF5bWVudHMtd3JpdGUtYWNoLWRlYml0IGNvdW50ZXJwYXJ0aWVzIGNvdW50ZXJwYXJ0aWVzLXdyaXRlIGJhdGNoLXJlbGVhc2VzIGJhdGNoLXJlbGVhc2VzLXdyaXRlIGxpbmtlZC1hY2NvdW50cyBsaW5rZWQtYWNjb3VudHMtd3JpdGUgd2ViaG9va3Mgd2ViaG9va3Mtd3JpdGUgZXZlbnRzIGV2ZW50cy13cml0ZSBhdXRob3JpemF0aW9uLXJlcXVlc3RzIGF1dGhvcml6YXRpb24tcmVxdWVzdHMtd3JpdGUgY2FzaC1kZXBvc2l0cyBjYXNoLWRlcG9zaXRzLXdyaXRlIGNoZWNrLWRlcG9zaXRzIGNoZWNrLWRlcG9zaXRzLXdyaXRlIHJlY2VpdmVkLXBheW1lbnRzIHJlY2VpdmVkLXBheW1lbnRzLXdyaXRlIGRpc3B1dGVzIGNoYXJnZWJhY2tzIGNoYXJnZWJhY2tzLXdyaXRlIHJld2FyZHMgcmV3YXJkcy13cml0ZSBjaGVjay1wYXltZW50cyBjaGVjay1wYXltZW50cy13cml0ZSBjcmVkaXQtZGVjaXNpb25zIGNyZWRpdC1kZWNpc2lvbnMtd3JpdGUgbGVuZGluZy1wcm9ncmFtcyBsZW5kaW5nLXByb2dyYW1zLXdyaXRlIGNhcmQtZnJhdWQtY2FzZXMgY2FyZC1mcmF1ZC1jYXNlcy13cml0ZSBjcmVkaXQtYXBwbGljYXRpb25zIGNyZWRpdC1hcHBsaWNhdGlvbnMtd3JpdGUgbWlncmF0aW9ucyBtaWdyYXRpb25zLXdyaXRlIHRheCB0YXgtd3JpdGUgZm9ybXMgZm9ybXMtd3JpdGUgZm9ybXMtc2Vuc2l0aXZlIHdpcmUtZHJhd2Rvd25zIHdpcmUtZHJhd2Rvd25zLXdyaXRlIiwib3JnIjoiU2FpbnQgVmlzaW9uIFRlY2hub2xvZ2llcyBMTEMiLCJzb3VyY2VJcCI6IiIsInVzZXJUeXBlIjoib3JnIiwiaXNVbml0UGlsb3QiOmZhbHNlLCJpc1BhcmVudE9yZyI6ZmFsc2V9O4-mDM-eG-Cg1jrf4OhT71DAjvD-OOI7-evIWLFkaT3oVYs9-Jd4q88tggnuADydGncOE12eG8AxUE4g7NPjBA"
+
 export default function BankingPage() {
   const [isLoading, setIsLoading] = useState(true)
-  const [jwtToken, setJwtToken] = useState("")
 
   useEffect(() => {
-    // Fetch JWT token from API
-    const fetchToken = async () => {
-      try {
-        const response = await fetch("/api/unit/token")
-        const data = await response.json()
-        if (data.token) {
-          setJwtToken(data.token)
-          console.log("[v0] Unit.co token fetched successfully")
-        }
-      } catch (error) {
-        console.error("[v0] Error fetching Unit.co token:", error)
-      }
-    }
-
-    fetchToken()
-
+    console.log("[v0] Banking page mounted, waiting for Unit.co components to load")
+    
     // Check if Unit.co script is loaded
     const checkUnitLoaded = setInterval(() => {
       if (typeof window !== "undefined" && (window as any).customElements?.get("unit-elements-white-label-app")) {
         setIsLoading(false)
         clearInterval(checkUnitLoaded)
-        console.log("[v0] Unit.co web components loaded")
+        console.log("[v0] Unit.co web components loaded successfully")
       }
     }, 100)
 
@@ -39,6 +26,7 @@ export default function BankingPage() {
     const timeout = setTimeout(() => {
       setIsLoading(false)
       clearInterval(checkUnitLoaded)
+      console.log("[v0] Timeout reached, showing banking interface")
     }, 10000)
 
     return () => {
@@ -82,19 +70,21 @@ export default function BankingPage() {
       </nav>
 
       {/* Main Content */}
-      <div className="pt-16">
-        {(isLoading || !jwtToken) && (
+      <div className="pt-16 min-h-screen">
+        {isLoading && (
           <div className="flex items-center justify-center min-h-screen">
             <div className="text-center">
               <Loader2 className="w-8 h-8 text-gold animate-spin mx-auto mb-4" />
               <p className="text-white/60">Loading banking platform...</p>
-              {!jwtToken && <p className="text-white/40 text-sm mt-2">Authenticating...</p>}
+              <p className="text-white/40 text-sm mt-2">Initializing Unit.co components...</p>
             </div>
           </div>
         )}
 
         {/* Unit.co White Label App */}
-        {jwtToken && <unit-elements-white-label-app jwt-token={jwtToken} />}
+        <div className={isLoading ? "hidden" : "block"}>
+          <unit-elements-white-label-app jwt-token={UNIT_JWT_TOKEN} />
+        </div>
       </div>
     </div>
   )
