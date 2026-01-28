@@ -187,16 +187,10 @@ export default async function AdminDashboard() {
               Investor Portal
             </Link>
             <Link
-              href="/affiliate/darren"
-              className="px-4 py-2 bg-white/10 border border-[#00CED1]/30 rounded-lg text-[#00CED1] hover:bg-white/20 transition"
+              href="/banking"
+              className="px-4 py-2 bg-white/10 border border-purple-500/30 rounded-lg text-purple-400 hover:bg-white/20 transition"
             >
-              Darren's Page
-            </Link>
-            <Link
-              href="/affiliate/jr"
-              className="px-4 py-2 bg-white/10 border border-gold/30 rounded-lg text-gold hover:bg-white/20 transition"
-            >
-              JR's Page
+              Banking Platform
             </Link>
           </div>
         </div>

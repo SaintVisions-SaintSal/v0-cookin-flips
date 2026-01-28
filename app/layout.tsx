@@ -15,20 +15,18 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: "CookinFlips | Powered by SaintSal.ai + FlipEffective",
+  title: "CookinFlips | Powered by SaintSal.ai",
   description:
-    "$3B+ in managed assets. $1B+ capital raised. 51 states. The nation's premier real estate investment firm powered by SaintSal™ AI. Wholesale, lending, investing, and brokerage services. Led by CEO Darren Brown and Founder Ryan Capatosto.",
+    "The nation's premier real estate investment platform powered by SaintSal™ AI. Wholesale properties, lending products, investment opportunities, and banking services. Built by Ryan Capatosto.",
   keywords:
-    "real estate investment, wholesale properties, fix and flip loans, DSCR loans, commercial lending, distressed assets, SaintSal AI, SaintSal.ai, CookinFlips, FlipEffective, Darren Brown, Ryan Capatosto, JR Taber, Orange County real estate, affiliate program",
+    "real estate investment, wholesale properties, fix and flip loans, DSCR loans, commercial lending, distressed assets, SaintSal AI, SaintSal.ai, CookinFlips, Ryan Capatosto, Orange County real estate, real estate banking",
   authors: [
     { name: "Ryan Capatosto - Founder & Creator" },
-    { name: "Darren Brown - CEO FlipEffective" },
-    { name: "JR Taber - President" },
   ],
   openGraph: {
-    title: "CookinFlips | Powered by SaintSal.ai + FlipEffective",
+    title: "CookinFlips | Powered by SaintSal.ai",
     description:
-      "$3B+ in managed assets. The nation's premier real estate investment firm powered by SaintSal™ AI. Led by CEO Darren Brown.",
+      "The nation's premier real estate investment platform powered by SaintSal™ AI. Wholesale, lending, investing, and banking services.",
     url: "https://cookinflips.com",
     siteName: "CookinFlips",
     images: [
@@ -43,8 +41,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "CookinFlips | Powered by SaintSal.ai + FlipEffective",
-    description: "$3B+ in managed assets. The nation's premier real estate investment firm powered by SaintSal™ AI.",
+    title: "CookinFlips | Powered by SaintSal.ai",
+    description: "The nation's premier real estate investment platform powered by SaintSal™ AI.",
     images: ["/images/SAINTSALCOOKINKNOWELEDGENEON.png"],
   },
   icons: {
