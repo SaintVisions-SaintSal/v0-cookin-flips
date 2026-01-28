@@ -21,6 +21,7 @@ import {
   Users,
   CheckCircle2,
   TrendingUp,
+  Wallet,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
@@ -83,6 +84,9 @@ export default function CookinFlipsHome() {
               <Link href="/analysis" className="text-white/70 hover:text-gold transition flex items-center gap-1.5">
                 <Calculator className="w-4 h-4" /> Analyze
               </Link>
+              <Link href="/banking" className="text-white/70 hover:text-gold transition flex items-center gap-1.5">
+                <Wallet className="w-4 h-4" /> Banking
+              </Link>
               <Link href="/lending" className="text-white/70 hover:text-gold transition">Lending</Link>
               <Link href="#team" className="text-white/70 hover:text-gold transition">Team</Link>
               <a href="tel:9499972097" className="px-4 py-2 bg-gold text-black font-semibold rounded-lg text-sm hover:bg-gold/90 transition">
@@ -102,6 +106,7 @@ export default function CookinFlipsHome() {
               <div className="px-4 py-4 space-y-3">
                 <Link href="/research" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 py-2 text-gold"><Brain className="w-4 h-4" /> SaintSal™ AI</Link>
                 <Link href="/analysis" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 py-2 text-white/80"><Calculator className="w-4 h-4" /> Deal Analyzer</Link>
+                <Link href="/banking" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 py-2 text-white/80"><Wallet className="w-4 h-4" /> Banking</Link>
                 <Link href="/lending" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-white/80">Lending</Link>
                 <Link href="#team" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-white/80">Team</Link>
                 <a href="tel:9499972097" className="block w-full py-3 bg-gold text-black font-semibold rounded-lg text-center">(949) 997-2097</a>
@@ -180,7 +185,7 @@ export default function CookinFlipsHome() {
       {/* Quick Access Tools */}
       <section className="py-12 px-4 border-y border-white/10 bg-[#080808]">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-4 gap-4">
             <Link href="/research" className="p-5 bg-gradient-to-br from-gold/10 to-transparent border border-gold/20 rounded-xl hover:border-gold/40 transition group">
               <Brain className="w-8 h-8 text-gold mb-3" />
               <h3 className="font-semibold text-white mb-1 group-hover:text-gold transition">SaintSal™ AI</h3>
@@ -190,6 +195,11 @@ export default function CookinFlipsHome() {
               <Calculator className="w-8 h-8 text-cyan-400 mb-3" />
               <h3 className="font-semibold text-white mb-1 group-hover:text-cyan-400 transition">Deal Analyzer</h3>
               <p className="text-sm text-white/50">Calculate MAO, ROI, and get AI deal verdicts</p>
+            </Link>
+            <Link href="/banking" className="p-5 bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition group">
+              <Wallet className="w-8 h-8 text-purple-400 mb-3" />
+              <h3 className="font-semibold text-white mb-1 group-hover:text-purple-400 transition">Banking Platform</h3>
+              <p className="text-sm text-white/50">Manage accounts, investments, and transactions</p>
             </Link>
             <Link href="/lending" className="p-5 bg-gradient-to-br from-green-500/10 to-transparent border border-green-500/20 rounded-xl hover:border-green-500/40 transition group">
               <DollarSign className="w-8 h-8 text-green-400 mb-3" />
