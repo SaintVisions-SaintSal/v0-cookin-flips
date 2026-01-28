@@ -275,48 +275,6 @@ export default function CookinFlipsHome() {
               </div>
             </div>
 
-            {/* Darren Brown - CRO */}
-            <div className="p-6 bg-[#111] border border-white/10 rounded-xl">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-16 h-16 bg-cyan-500/10 rounded-full flex items-center justify-center">
-                  <Image src="/images/DRIPLOGOSAINT_.png" alt="Darren" width={48} height={48} className="object-contain" />
-                </div>
-                <div>
-                  <div className="px-2 py-0.5 bg-cyan-500 text-black text-xs font-bold rounded mb-1 inline-block">CRO</div>
-                  <h3 className="text-xl font-bold text-white">Darren Brown</h3>
-                  <p className="text-cyan-400 text-sm">Chief Relations Officer</p>
-                </div>
-              </div>
-              <p className="text-white/60 text-sm mb-4">
-                Chief Relations Officer & Director of Acquisitions. $3B+ in distressed assets resolved. $1B+ capital raised. Leading nationwide expansion.
-              </p>
-              <div className="flex gap-2">
-                <Link href="/affiliate/darren" className="px-4 py-2 bg-cyan-500 text-black font-semibold rounded-lg text-sm hover:bg-cyan-400 transition">
-                  Join Team
-                </Link>
-                <a href="tel:9496301858" className="px-4 py-2 border border-white/20 text-white rounded-lg text-sm hover:bg-white/5 transition">
-                  Call
-                </a>
-              </div>
-            </div>
-
-            {/* JR Taber */}
-            <div className="p-6 bg-[#111] border border-white/10 rounded-xl">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 bg-gold/10 rounded-full flex items-center justify-center">
-                  <Image src="/images/TRANSPARENTSAINTSALLOGO.png" alt="JR" width={40} height={40} className="object-contain" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-white">JR Taber</h3>
-                  <p className="text-white/50 text-sm">President, Affiliate Program</p>
-                  <p className="text-gold text-xs">VP Director of Lending</p>
-                </div>
-              </div>
-              <Link href="/affiliate/jr" className="px-4 py-2 bg-white/5 border border-white/10 text-white rounded-lg text-sm hover:bg-white/10 transition inline-block">
-                Join JR's Team
-              </Link>
-            </div>
-
             {/* Omar Gutierrez */}
             <div className="p-6 bg-[#111] border border-white/10 rounded-xl">
               <div className="flex items-center gap-4 mb-4">
@@ -369,17 +327,7 @@ export default function CookinFlipsHome() {
                 </div>
               </div>
 
-              <div className="mt-6 p-4 bg-gold/5 border border-gold/20 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  <Users className="w-4 h-4 text-gold" />
-                  <span className="text-gold text-sm font-semibold">Affiliate Program</span>
-                </div>
-                <p className="text-white/50 text-sm mb-3">Earn commissions on referrals</p>
-                <div className="flex gap-2">
-                  <Link href="/affiliate/darren" className="px-3 py-1.5 bg-cyan-500 text-black text-xs font-semibold rounded">Darren's Team</Link>
-                  <Link href="/affiliate/jr" className="px-3 py-1.5 bg-gold text-black text-xs font-semibold rounded">JR's Team</Link>
-                </div>
-              </div>
+
             </div>
 
             <div className="bg-[#111] border border-white/10 rounded-xl p-6">

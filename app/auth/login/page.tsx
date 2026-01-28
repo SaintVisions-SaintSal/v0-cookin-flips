@@ -27,12 +27,14 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error, data } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
       if (error) throw error
-      router.push("/admin")
+      
+      console.log("[v0] Login successful, redirecting to portal")
+      router.push("/portal")
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred")
     } finally {
@@ -60,9 +62,9 @@ export default function LoginPage() {
 
         <Card className="bg-[#111] border-gold/30">
           <CardHeader>
-            <CardTitle className="text-2xl text-white">Admin Login</CardTitle>
+            <CardTitle className="text-2xl text-white">Client Portal Login</CardTitle>
             <CardDescription className="text-white/60">
-              Enter your credentials to access the admin dashboard
+              Enter your credentials to access your investor portal
             </CardDescription>
           </CardHeader>
           <CardContent>
