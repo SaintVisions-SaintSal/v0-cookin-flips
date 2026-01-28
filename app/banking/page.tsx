@@ -3,24 +3,37 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowLeft, Loader2 } from "lucide-react"
+import { ArrowLeft, Loader2, AlertCircle } from "lucide-react"
 
 export default function BankingPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [jwtToken, setJwtToken] = useState("")
+  const [error, setError] = useState("")
 
   useEffect(() => {
+    console.log("[v0] Banking page mounted, fetching Unit.co token")
+    
     // Fetch JWT token from API
     const fetchToken = async () => {
       try {
         const response = await fetch("/api/unit/token")
         const data = await response.json()
+        
+        if (data.error) {
+          console.error("[v0] Error from token API:", data.error)
+          setError(data.error)
+          setIsLoading(false)
+          return
+        }
+        
         if (data.token) {
           setJwtToken(data.token)
           console.log("[v0] Unit.co token fetched successfully")
         }
-      } catch (error) {
-        console.error("[v0] Error fetching Unit.co token:", error)
+      } catch (err) {
+        console.error("[v0] Error fetching Unit.co token:", err)
+        setError("Failed to authenticate with banking platform")
+        setIsLoading(false)
       }
     }
 
@@ -31,7 +44,7 @@ export default function BankingPage() {
       if (typeof window !== "undefined" && (window as any).customElements?.get("unit-elements-white-label-app")) {
         setIsLoading(false)
         clearInterval(checkUnitLoaded)
-        console.log("[v0] Unit.co web components loaded")
+        console.log("[v0] Unit.co web components loaded successfully")
       }
     }, 100)
 
@@ -39,6 +52,7 @@ export default function BankingPage() {
     const timeout = setTimeout(() => {
       setIsLoading(false)
       clearInterval(checkUnitLoaded)
+      console.log("[v0] Timeout reached, showing banking interface")
     }, 10000)
 
     return () => {
@@ -82,19 +96,39 @@ export default function BankingPage() {
       </nav>
 
       {/* Main Content */}
-      <div className="pt-16">
-        {(isLoading || !jwtToken) && (
+      <div className="pt-16 min-h-screen">
+        {error && (
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="text-center max-w-md mx-auto px-4">
+              <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-white mb-2">Authentication Required</h2>
+              <p className="text-white/60 mb-6">{error}</p>
+              <Link
+                href="/auth/login"
+                className="inline-flex items-center px-6 py-3 bg-gold text-black font-semibold rounded-lg hover:bg-gold/90 transition"
+              >
+                Sign In to Continue
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {isLoading && !error && (
           <div className="flex items-center justify-center min-h-screen">
             <div className="text-center">
               <Loader2 className="w-8 h-8 text-gold animate-spin mx-auto mb-4" />
               <p className="text-white/60">Loading banking platform...</p>
-              {!jwtToken && <p className="text-white/40 text-sm mt-2">Authenticating...</p>}
+              <p className="text-white/40 text-sm mt-2">Authenticating with Unit.co...</p>
             </div>
           </div>
         )}
 
         {/* Unit.co White Label App */}
-        {jwtToken && <unit-elements-white-label-app jwt-token={jwtToken} />}
+        {jwtToken && !error && (
+          <div className={isLoading ? "hidden" : "block"}>
+            <unit-elements-white-label-app jwt-token={jwtToken} />
+          </div>
+        )}
       </div>
     </div>
   )
