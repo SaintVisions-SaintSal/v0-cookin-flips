@@ -7,13 +7,31 @@ import { ArrowLeft, Loader2 } from "lucide-react"
 
 export default function BankingPage() {
   const [isLoading, setIsLoading] = useState(true)
+  const [jwtToken, setJwtToken] = useState("")
 
   useEffect(() => {
+    // Fetch JWT token from API
+    const fetchToken = async () => {
+      try {
+        const response = await fetch("/api/unit/token")
+        const data = await response.json()
+        if (data.token) {
+          setJwtToken(data.token)
+          console.log("[v0] Unit.co token fetched successfully")
+        }
+      } catch (error) {
+        console.error("[v0] Error fetching Unit.co token:", error)
+      }
+    }
+
+    fetchToken()
+
     // Check if Unit.co script is loaded
     const checkUnitLoaded = setInterval(() => {
       if (typeof window !== "undefined" && (window as any).customElements?.get("unit-elements-white-label-app")) {
         setIsLoading(false)
         clearInterval(checkUnitLoaded)
+        console.log("[v0] Unit.co web components loaded")
       }
     }, 100)
 
@@ -65,17 +83,18 @@ export default function BankingPage() {
 
       {/* Main Content */}
       <div className="pt-16">
-        {isLoading && (
+        {(isLoading || !jwtToken) && (
           <div className="flex items-center justify-center min-h-screen">
             <div className="text-center">
               <Loader2 className="w-8 h-8 text-gold animate-spin mx-auto mb-4" />
               <p className="text-white/60">Loading banking platform...</p>
+              {!jwtToken && <p className="text-white/40 text-sm mt-2">Authenticating...</p>}
             </div>
           </div>
         )}
 
         {/* Unit.co White Label App */}
-        <unit-elements-white-label-app jwt-token={process.env.NEXT_PUBLIC_UNIT_CO_JWT_TOKEN || ""} />
+        {jwtToken && <unit-elements-white-label-app jwt-token={jwtToken} />}
       </div>
     </div>
   )
